@@ -12,7 +12,7 @@ async function addDish(newDish) {
 }
 
 function getDish(id) {
-    return db('dishes').join('recipes', 'recipes.dish_id', '=', 'dishes.id').where({'dishes.id': Number(id)});
+    return db('dishes').join('recipes', 'recipes.dish_id', '=', 'dishes.id').where({'dishes.id': id});
 }
 
 function getRecipes() {
@@ -24,11 +24,38 @@ async function addRecipe(newRecipe) {
     return {id: ids[0]}
 }
 
+async function getRecipe(id) {
+    let recipe = await db('recipes')
+    .join('dishes', 'dishes.id', '=', 'recipes.dish_id')
+    .select('recipes.name as recipe','dishes.name as dish', 'recipes.directions')
+    .where({'recipes.id': id});
+
+    let ingredientList = await db('recipes')
+    .join('ingredientsList','ingredientsList.recipe_id', '=', 'recipes.id')
+    .join('ingredients', 'ingredients.id', '=','ingredientsList.ingredient_id')
+    .select('ingredients.name as ingredient',  'ingredientsList.amount', 'ingredientsList.unit')
+    .where({'recipes.id': id});
+
+    return {
+        ...recipe[0],
+        ingredientList
+    }
+}
+
+function getShoppingList(recipeID) {
+    return db('recipes')
+    .join('ingredientsList','ingredientsList.recipe_id', '=', 'recipes.id')
+    .join('ingredients', 'ingredients.id', '=','ingredientsList.ingredient_id')
+    .select('ingredients.name as ingredient',  'ingredientsList.amount', 'ingredientsList.unit')
+    .where({'recipes.id': recipeID});
+}
 
 module.exports = {
     getDishes,
     addDish,
     getDish,
     getRecipes,
-    addRecipe
+    addRecipe,
+    getRecipe,
+    getShoppingList
 }

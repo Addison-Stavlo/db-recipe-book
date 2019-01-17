@@ -53,6 +53,22 @@ server.get('/api/recipes', (req,res,next) => {
         .catch(err => res.status(500).json(err))
 })
 
+server.get('/api/recipes/:id', (req,res,next) => {
+    db.getRecipe(req.params.id)
+        .then(recipe => {
+            res.status(200).json(recipe);
+        })
+        .catch(err => res.status(500).json(err));
+})
+
+server.get('/api/recipes/:id/list', (req,res,next) => {
+    db.getShoppingList(req.params.id)
+        .then(list => {
+            res.status(200).json(list);
+        })
+        .catch(err => res.status(500).json(err));
+})
+
 server.post('/api/recipes', (req,res,next) => {
     db.addRecipe(req.body)
         .then(id => {
