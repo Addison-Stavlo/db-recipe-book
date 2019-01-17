@@ -3,8 +3,8 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('ingredientsList', tbl => {
       tbl.increments();
 
-      tbl.integer('recipe_id').unsigned().references('id').inTable('recipes');
-      tbl.integer('ingredient_id').unsigned().references('id').inTable('ingredients');
+      tbl.integer('recipe_id').unsigned().references('id').inTable('recipes').notNullable();
+      tbl.integer('ingredient_id').unsigned().references('id').inTable('ingredients').notNullable();
 
       tbl.float('amount').notNullable();
       tbl.string('unit',128).notNullable();

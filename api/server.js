@@ -26,15 +26,39 @@ server.get('/api/dishes', (req,res,next) => {
         .then(dishes=> {
             res.status(200).json(dishes)
         })
-        .catch(err => next(err))
+        .catch(err => res.status(500).json(err))
 });
+
+server.get('/api/dishes/:id', (req,res,next) => {
+    db.getDish(req.params.id)
+        .then(dish => {
+            res.status(200).json(dish)
+        })
+        .catch(err => res.status(500).json(err))
+})
+
+server.post('/api/dishes', (req,res,next) => {
+    db.addDish(req.body)
+        .then(id => {
+            res.status(201).json({message: 'successful creation of dish', id})
+        })
+        .catch(err => res.status(500).json(err))
+})
 
 server.get('/api/recipes', (req,res,next) => {
     db.getRecipes()
         .then(recipes => {
             res.status(200).json(recipes)
         })
-        .catch(err => next(err))
+        .catch(err => res.status(500).json(err))
+})
+
+server.post('/api/recipes', (req,res,next) => {
+    db.addRecipe(req.body)
+        .then(id => {
+            res.status(201).json({message: 'successfully created recipe', id})
+        })
+        .catch(err => res.status(500).json(err))
 })
 
 //exports

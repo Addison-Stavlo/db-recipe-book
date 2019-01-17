@@ -6,14 +6,9 @@ function getDishes() {
     return db('dishes');
 }
 
-async function addDish(newDish) {
-    try{
-        let ids = await db('dishes').insert(newDish);
-        return {id: ids[0]}
-    }
-    catch(err){
-        return err;
-    }
+async function addDish(newDish) {  
+    let ids = await db('dishes').insert(newDish);
+    return {id: ids[0]}
 }
 
 function getDish(id) {
@@ -25,13 +20,8 @@ function getRecipes() {
 }
 
 async function addRecipe(newRecipe) {
-    try{
-        let ids = await db('recipes').insert(newRecipe);
-        return {id: ids[0]}
-    }
-    catch(err){
-        return err;
-    }
+    let ids = await db('recipes').insert(newRecipe);
+    return {id: ids[0]}
 }
 
 
